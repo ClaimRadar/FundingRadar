@@ -24,3 +24,11 @@ def customize_filters_keyboard():
         [InlineKeyboardButton("🔙 Back", callback_data="main_menu")]
     ]
     return InlineKeyboardMarkup(keyboard)
+
+def settings_menu_keyboard():
+    keyboard = [
+        [InlineKeyboardButton("🌐 Change Language", callback_data="change_language")],
+        [InlineKeyboardButton("♻️ Reset Filters", callback_data="reset_filters")],
+        [InlineKeyboardButton("🔙 Back", callback_data="main_menu")]
+    ]
+    return InlineKeyboardMarkup(keyboard)
