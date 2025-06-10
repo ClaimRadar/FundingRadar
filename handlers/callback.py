@@ -92,3 +92,23 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await query.edit_message_text("♻️ Filters reset to default.")
 
 callback_query_handler = CallbackQueryHandler(handle_callback)
+    elif data == "premium_menu":
+        await query.edit_message_text(
+            "💎 *Premium Features:*\n\n"
+            "• Real-time alerts\n"
+            "• Custom thresholds\n"
+            "• Coin & exchange filters\n"
+            "• Funding countdown\n\n"
+            "💳 *Price:* £9.90 / month",
+            parse_mode="Markdown",
+            reply_markup=premium_purchase_keyboard()  # ✅ Butonlar burada
+        )
+
+    elif data == "buy_premium":
+        user.is_premium = True  # ⚠️ Şimdilik doğrudan premium yapıyoruz
+        await query.edit_message_text(
+            "🎉 You are now a *Premium* member!\n\n"
+            "You can now customize your filters and receive real-time alerts.",
+            parse_mode="Markdown"
+        )
+
