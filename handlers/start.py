@@ -13,7 +13,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "This bot monitors funding rates across major exchanges like *Binance, Bybit, OKX,* and *MEXC*.\n\n"
             "Use the menu below to get started 👇"
         ),
-        reply_markup=start_menu_keyboard(),  # ✅ BUTONLAR BURADA
+        reply_markup=start_menu_keyboard(),
         parse_mode="Markdown"
     )
 
