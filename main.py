@@ -1,5 +1,6 @@
 from handlers.filters.coin_filter import coin_filter_entry_handler, coin_filter_toggle_handler
 from handlers.filters.exchange_filter import exchange_filter_entry_handler, exchange_filter_toggle_handler
+from handlers.filters.countdown_toggle import countdown_menu_handler, toggle_countdown_handler
 
 from telegram.ext import (
     ApplicationBuilder,
@@ -125,6 +126,8 @@ def main():
     app.add_handler(exchange_filter_toggle_handler)
     app.add_handler(threshold_entry_handler)
     app.add_handler(threshold_input_handler)
+    app.add_handler(countdown_menu_handler)
+    app.add_handler(toggle_countdown_handler)
 
 
     # Replit keep-alive
