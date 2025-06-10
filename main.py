@@ -1,4 +1,5 @@
 from handlers.filters.coin_filter import coin_filter_entry_handler, coin_filter_toggle_handler
+from handlers.filters.exchange_filter import exchange_filter_entry_handler, exchange_filter_toggle_handler
 
 from telegram.ext import (
     ApplicationBuilder,
