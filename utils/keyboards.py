@@ -32,3 +32,10 @@ def settings_menu_keyboard():
         [InlineKeyboardButton("🔙 Back", callback_data="main_menu")]
     ]
     return InlineKeyboardMarkup(keyboard)
+    
+def premium_purchase_keyboard():
+    keyboard = [
+        [InlineKeyboardButton("💳 Buy Premium", callback_data="buy_premium")],
+        [InlineKeyboardButton("🔙 Back", callback_data="main_menu")]
+    ]
+    return InlineKeyboardMarkup(keyboard)
