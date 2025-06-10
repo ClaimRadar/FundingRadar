@@ -1,8 +1,12 @@
 from telegram import Update
 from telegram.ext import CommandHandler, ContextTypes
 from utils.keyboards import start_menu_keyboard
+from models.user_data_store import get_or_create_user  # ✅ EKLE
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_id = update.effective_user.id
+    user = get_or_create_user(user_id)  # ✅ Kullanıcıyı belleğe al
+
     await update.message.reply_text(
         text=(
             "👋 Welcome to *Funding Radar Bot*!\n\n"
