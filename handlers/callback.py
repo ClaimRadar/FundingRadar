@@ -3,7 +3,8 @@ from telegram.ext import CallbackQueryHandler, ContextTypes
 from utils.keyboards import (
     start_menu_keyboard,
     main_menu_keyboard,
-    customize_filters_keyboard
+    customize_filters_keyboard,
+    settings_menu_keyboard
 )
 from models.user_data_store import get_or_create_user
 
@@ -73,5 +74,21 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
         await query.edit_message_text(msg, parse_mode="Markdown")
+
+    elif data == "settings":
+        await query.edit_message_text(
+            "⚙️ Settings Menu:",
+            reply_markup=settings_menu_keyboard()
+        )
+
+    elif data == "change_language":
+        await query.edit_message_text("🌐 Language switching is not available yet.")
+
+    elif data == "reset_filters":
+        user.coins = []
+        user.exchanges = []
+        user.threshold = 1.0
+        user.countdown_enabled = False
+        await query.edit_message_text("♻️ Filters reset to default.")
 
 callback_query_handler = CallbackQueryHandler(handle_callback)
