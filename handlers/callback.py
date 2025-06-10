@@ -58,4 +58,20 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await query.edit_message_text("🔢 Enter your custom threshold (e.g. 0.25 for 0.25%)")
         context.user_data["awaiting_threshold_input"] = True
 
+    elif data == "my_filters":
+        coins = ", ".join(user.coins) if user.coins else "All"
+        exchanges = ", ".join(user.exchanges) if user.exchanges else "All"
+        threshold = f"{user.threshold:.2f}%"
+        countdown = "Enabled ✅" if user.countdown_enabled else "Disabled ❌"
+
+        msg = (
+            "🔍 *Your Current Filters:*\n\n"
+            f"• Coins: `{coins}`\n"
+            f"• Exchanges: `{exchanges}`\n"
+            f"• Threshold: `{threshold}`\n"
+            f"• Countdown: `{countdown}`"
+        )
+
+        await query.edit_message_text(msg, parse_mode="Markdown")
+
 callback_query_handler = CallbackQueryHandler(handle_callback)
