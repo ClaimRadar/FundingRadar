@@ -1,11 +1,13 @@
 import random
 import time
 
-def get_dummy_funding_rates():
-    """
-    Returns fake funding rate data for testing.
-    You can later replace this with real API data.
-    """
+def get_mock_funding_data():
+    return [
+        {"coin": "BTC", "exchange": "Binance", "rate": 0.018, "funding_in": 180},
+        {"coin": "ETH", "exchange": "Bybit", "rate": 0.027, "funding_in": 45},
+        {"coin": "PEPE", "exchange": "OKX", "rate": -0.042, "funding_in": 10},
+        {"coin": "XRP", "exchange": "MEXC", "rate": 0.095, "funding_in": 190},
+    ]
 
     return [
         {
