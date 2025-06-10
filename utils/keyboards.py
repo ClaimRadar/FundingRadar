@@ -27,6 +27,8 @@ def settings_menu_keyboard():
         [InlineKeyboardButton("🌐 Change Language", callback_data="change_language")],
         [InlineKeyboardButton("♻️ Reset Filters", callback_data="reset_filters")],
         [InlineKeyboardButton("🔙 Back", callback_data="main_menu")]
+        [InlineKeyboardButton("⏳ Countdown Settings", callback_data="toggle_countdown_menu")]
+
     ])
 
 def premium_purchase_keyboard():
