@@ -1,4 +1,10 @@
-from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler
+from telegram.ext import (
+    ApplicationBuilder,
+    CommandHandler,
+    CallbackQueryHandler,
+    MessageHandler,
+    filters
+)
 from config import BOT_TOKEN
 import keep_alive
 import asyncio
@@ -7,13 +13,15 @@ import asyncio
 from handlers.start import start_handler
 from handlers.callback import callback_query_handler
 from handlers.global_alerts import global_alerts_handler, send_global_alert
+from handlers.message_input import message_input_handler
 
-# User Data Store
+# User Data
 from models.user_data_store import get_all_user_ids
 
+# Saatlik görev
 async def hourly_alert_task(app):
     while True:
-        await asyncio.sleep(3600)  # 1 saat
+        await asyncio.sleep(3600)  # Her 1 saatte bir
         user_ids = get_all_user_ids()
         for user_id in user_ids:
             try:
@@ -27,18 +35,19 @@ async def hourly_alert_task(app):
 def main():
     app = ApplicationBuilder().token(BOT_TOKEN).build()
 
-    # Command & Callback Handlers
+    # Bot komutları ve mesajlar
     app.add_handler(start_handler)
     app.add_handler(callback_query_handler)
     app.add_handler(global_alerts_handler)
+    app.add_handler(message_input_handler)
 
-    # Replit Keep Alive
+    # Replit keep-alive
     keep_alive.keep_alive()
 
-    # Saatlik görev başlat
+    # Saatlik loop başlat
     app.job_queue.run_once(lambda ctx: asyncio.create_task(hourly_alert_task(app)), when=0)
 
-    print("✅ FundingRadar Bot is running with hourly alerts...")
+    print("✅ FundingRadar Bot is running with all features active...")
     app.run_polling()
 
 if __name__ == "__main__":
