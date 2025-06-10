@@ -22,7 +22,13 @@ from handlers.start import start_handler
 from handlers.callback import callback_query_handler
 from handlers.global_alerts import global_alerts_handler, send_global_alert
 from handlers.message_input import message_input_handler
-# Gerekirse: from handlers.profile import profile_handler
+
+# ✅ Yeni Slash Command handler'ları
+from handlers.profile import profile_handler
+from handlers.settings import settings_handler
+from handlers.help import help_handler
+from handlers.premium import premium_handler
+from handlers.alert import alert_handler
 
 # User Data
 from models.user_data_store import get_all_user_ids, get_or_create_user
@@ -48,7 +54,7 @@ def stripe_webhook():
         print("❌ Invalid signature")
         return 'Invalid signature', 400
 
-    print("✅ Stripe Webhook received:", event['type'])
+    print("✅ Stripe Webhook geldi:", event['type'])
 
     if event['type'] == 'checkout.session.completed':
         session = event['data']['object']
@@ -64,10 +70,10 @@ def stripe_webhook():
 
     return '', 200
 
-# Saatlik görev (her 1 saatte bir funding alarm)
+# Saatlik görev
 async def hourly_alert_task(app):
     while True:
-        await asyncio.sleep(3600)
+        await asyncio.sleep(3600)  # Her 1 saatte bir
         user_ids = get_all_user_ids()
         for user_id in user_ids:
             try:
@@ -78,7 +84,7 @@ async def hourly_alert_task(app):
             except Exception as e:
                 print(f"❌ Error sending to {user_id}: {e}")
 
-# Komut menüsünü ayarla
+# Komut menüsünü Telegram'a tanımla
 async def setup_bot_menu(app):
     await app.bot.set_my_commands([
         BotCommand("start", "Start the bot"),
@@ -90,34 +96,41 @@ async def setup_bot_menu(app):
     ])
     await app.bot.set_chat_menu_button(menu_button=MenuButtonCommands())
 
-# Flask'ı ayrı bir thread'de çalıştır
+# Flask'ı ayrı thread'de başlat
 def run_flask():
     flask_app.run(host='0.0.0.0', port=8080)
 
 def main():
+    # Telegram botu
     app = ApplicationBuilder().token(BOT_TOKEN).build()
 
-    # Telegram handlers
+    # Komut ve callback handler'lar
     app.add_handler(start_handler)
     app.add_handler(callback_query_handler)
     app.add_handler(global_alerts_handler)
     app.add_handler(message_input_handler)
-    # Gerekirse: app.add_handler(profile_handler)
 
-    # Keep alive
+    # ✅ Slash komut handler'ları
+    app.add_handler(profile_handler)
+    app.add_handler(settings_handler)
+    app.add_handler(help_handler)
+    app.add_handler(premium_handler)
+    app.add_handler(alert_handler)
+
+    # Replit keep-alive
     keep_alive.keep_alive()
 
     # Saatlik funding kontrolü başlat
     app.job_queue.run_once(lambda ctx: asyncio.create_task(hourly_alert_task(app)), when=0)
 
-    # Slash komutları ve menu button'u Telegram'a yükle
+    # Slash komutları ve menu butonu yükle
     app.post_init = setup_bot_menu
 
     # Flask webhook başlat
     flask_thread = threading.Thread(target=run_flask)
     flask_thread.start()
 
-    print("✅ FundingRadar Bot is live with Stripe, commands, menu and alerts.")
+    print("✅ FundingRadar Bot is running with menu, webhook, and alert support...")
     app.run_polling()
 
 if __name__ == "__main__":
