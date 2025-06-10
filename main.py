@@ -121,6 +121,10 @@ def main():
     app.add_handler(alert_handler)
     app.add_handler(coin_filter_entry_handler)
     app.add_handler(coin_filter_toggle_handler)
+    app.add_handler(exchange_filter_entry_handler)
+    app.add_handler(exchange_filter_toggle_handler)
+    app.add_handler(threshold_entry_handler)
+    app.add_handler(threshold_input_handler)
 
 
     # Replit keep-alive
