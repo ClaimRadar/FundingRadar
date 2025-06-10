@@ -1,3 +1,5 @@
+from handlers.filters.coin_filter import coin_filter_entry_handler, coin_filter_toggle_handler
+
 from telegram.ext import (
     ApplicationBuilder,
     CommandHandler,
@@ -116,6 +118,9 @@ def main():
     app.add_handler(help_handler)
     app.add_handler(premium_handler)
     app.add_handler(alert_handler)
+    app.add_handler(coin_filter_entry_handler)
+    app.add_handler(coin_filter_toggle_handler)
+
 
     # Replit keep-alive
     keep_alive.keep_alive()
