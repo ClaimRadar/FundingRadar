@@ -1,31 +1,32 @@
-import random
-import time
+import requests
 
-def get_mock_funding_data():
-    return [
-        {"coin": "BTC", "exchange": "Binance", "rate": 0.018, "funding_in": 180},
-        {"coin": "ETH", "exchange": "Bybit", "rate": 0.027, "funding_in": 45},
-        {"coin": "PEPE", "exchange": "OKX", "rate": -0.042, "funding_in": 10},
-        {"coin": "XRP", "exchange": "MEXC", "rate": 0.095, "funding_in": 190},
-    ]
+MAXG_API_URL = "https://maxg-api.pages.dev/data/funding.json"
 
-    return [
-        {
-            "symbol": "BTC",
-            "exchange": "Binance",
-            "funding_rate": round(random.uniform(-0.02, 0.035), 4),
-            "next_funding_time": time.time() + 3600
-        },
-        {
-            "symbol": "ETH",
-            "exchange": "Bybit",
-            "funding_rate": round(random.uniform(-0.01, 0.02), 4),
-            "next_funding_time": time.time() + 1800
-        },
-        {
-            "symbol": "PEPE",
-            "exchange": "OKX",
-            "funding_rate": round(random.uniform(-0.03, 0.04), 4),
-            "next_funding_time": time.time() + 5400
-        }
-    ]
+def get_live_funding_data():
+    try:
+        response = requests.get(MAXG_API_URL, timeout=10)
+        response.raise_for_status()
+        data = response.json()
+    except Exception as e:
+        print(f"❌ Failed to fetch funding data: {e}")
+        return []
+
+    formatted = []
+
+    for item in data:
+        try:
+            coin = item["symbol"]
+            exchange = item["exchange"]
+            rate = float(item["fundingRate"]) * 100
+            time_remaining = int(item.get("nextFundingInMins", 0))
+
+            formatted.append({
+                "coin": coin,
+                "exchange": exchange,
+                "rate": rate,
+                "funding_in": time_remaining
+            })
+        except Exception as e:
+            continue
+
+    return formatted
