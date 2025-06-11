@@ -17,7 +17,7 @@ def get_live_funding_data():
         try:
             coin = item["symbol"]
             exchange = item["exchange"]
-            rate = float(item["fundingRate"]) * 100
+            rate = float(item["fundingRate"]) * 100  # Oranı yüzdeye çeviriyoruz
             time_remaining = int(item.get("nextFundingInMins", 0))
 
             formatted.append({
