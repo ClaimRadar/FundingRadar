@@ -1,6 +1,11 @@
 from handlers.filters.coin_filter import coin_filter_entry_handler, coin_filter_toggle_handler
 from handlers.filters.exchange_filter import exchange_filter_entry_handler, exchange_filter_toggle_handler
 from handlers.filters.countdown_toggle import countdown_menu_handler, toggle_countdown_handler
+from handlers.input_trigger import (
+    ask_coins_handler,
+    ask_exchanges_handler,
+    ask_threshold_handler
+)
 
 from telegram.ext import (
     ApplicationBuilder,
@@ -101,7 +106,11 @@ async def setup_bot_menu(app):
         BotCommand("help", "How to use this bot"),
         BotCommand("premium", "Upgrade to premium"),
         BotCommand("log", "Show recent alert logs (admin only)"), 
-        BotCommand("logcsv", "Export log file as CSV (admin only)"), # ✅ yeni komut
+        BotCommand("logcsv", "Export log file as CSV (admin only)"),
+        BotCommand("setcoins", "Enter the coins you want to track"),
+        BotCommand("setexchanges", "Select which exchanges to include"),
+        BotCommand("setthreshold", "Set minimum funding rate threshold"),
+                       # ✅ yeni komut
     ])
     await app.bot.set_chat_menu_button(menu_button=MenuButtonCommands())
 
@@ -126,7 +135,10 @@ def main():
     app.add_handler(premium_handler)
     app.add_handler(alert_handler)
     app.add_handler(log_handler)
-    app.add_handler(log_csv_handler)# ✅ Log handler burada
+    app.add_handler(log_csv_handler)
+    app.add_handler(ask_coins_handler)
+    app.add_handler(ask_exchanges_handler)
+    app.add_handler(ask_threshold_handler) # ✅ Log handler burada
 
     # Filtre handler'ları
     app.add_handler(coin_filter_entry_handler)
