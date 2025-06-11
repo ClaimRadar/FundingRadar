@@ -34,7 +34,8 @@ from handlers.settings import settings_handler
 from handlers.help import help_handler
 from handlers.premium import premium_handler
 from handlers.alert import alert_handler
-from handlers.logs import log_csv_handler  # ✅ Log handler eklendi
+from handlers.logs import log_csv_handler
+from handlers.graph import graph_handler # ✅ Log handler eklendi
 
 # User Data
 from models.user_data_store import get_all_user_ids, get_or_create_user
