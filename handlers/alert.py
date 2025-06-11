@@ -1,7 +1,8 @@
 from telegram import Update
 from telegram.ext import CommandHandler, ContextTypes
 from models.user_data_store import get_or_create_user
-from services.funding_data import get_mock_funding_data
+from services.funding_data import get_live_funding_data
+data = get_live_funding_data()
 
 def format_minutes(mins):
     h = mins // 60
