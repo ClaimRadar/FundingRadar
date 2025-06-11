@@ -27,13 +27,14 @@ from handlers.callback import callback_query_handler
 from handlers.global_alerts import global_alerts_handler, send_global_alert
 from handlers.message_input import message_input_handler
 
+
 # ✅ Yeni Slash Command handler'ları
 from handlers.profile import profile_handler
 from handlers.settings import settings_handler
 from handlers.help import help_handler
 from handlers.premium import premium_handler
 from handlers.alert import alert_handler
-from handlers.logs import log_handler  # ✅ Log handler eklendi
+from handlers.logs import log_csv_handler  # ✅ Log handler eklendi
 
 # User Data
 from models.user_data_store import get_all_user_ids, get_or_create_user
@@ -98,7 +99,8 @@ async def setup_bot_menu(app):
         BotCommand("settings", "Adjust preferences"),
         BotCommand("help", "How to use this bot"),
         BotCommand("premium", "Upgrade to premium"),
-        BotCommand("log", "Show recent alert logs (admin only)"),  # ✅ yeni komut
+        BotCommand("log", "Show recent alert logs (admin only)"), 
+        BotCommand("logcsv", "Export log file as CSV (admin only)"), # ✅ yeni komut
     ])
     await app.bot.set_chat_menu_button(menu_button=MenuButtonCommands())
 
@@ -122,7 +124,8 @@ def main():
     app.add_handler(help_handler)
     app.add_handler(premium_handler)
     app.add_handler(alert_handler)
-    app.add_handler(log_handler)  # ✅ Log handler burada
+    app.add_handler(log_handler)
+    app.add_handler(log_csv_handler)# ✅ Log handler burada
 
     # Filtre handler'ları
     app.add_handler(coin_filter_entry_handler)
