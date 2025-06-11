@@ -2,7 +2,7 @@ from telegram import Update
 from telegram.ext import CommandHandler, ContextTypes
 from models.user_data_store import get_or_create_user
 from services.funding_data import get_live_funding_data
-data = get_live_funding_data()
+from services.alert_logger import log_alert  # ✅ Log fonksiyonu
 
 def format_minutes(mins):
     h = mins // 60
@@ -13,7 +13,7 @@ async def alert(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     user = get_or_create_user(user_id)
 
-    data = get_mock_funding_data()
+    data = get_live_funding_data()
     filtered = []
 
     for item in data:
@@ -47,6 +47,9 @@ async def alert(update: Update, context: ContextTypes.DEFAULT_TYPE):
             msg += f" ⏳ in {format_minutes(mins)}"
 
         filtered.append(msg)
+
+        # ✅ Log dosyasına yaz
+        log_alert(user_id, coin, exch, rate, mins)
 
     if not filtered:
         await update.message.reply_text("📭 No alerts above your threshold.")
